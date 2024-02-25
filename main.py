@@ -10,7 +10,7 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         self.title("POGInstaller")
-        self.geometry("1280x720")
+        self.geometry("800x500")
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
