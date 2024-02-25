@@ -1,73 +1,74 @@
-import dearpygui.dearpygui as dpg
-import pygame
-import time
+import customtkinter
+import os
+from PIL import Image
 
-class UserInputData:
+customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
+customtkinter.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
+customtkinter.set_widget_scaling(0.8)
+
+class App(customtkinter.CTk):
     def __init__(self):
-        self.first_input_text = ""
-        self.second_input_text = ""
+        super().__init__()
+        self.title("POGInstaller")
+        self.geometry("1280x720")
 
-def close_viewport(sender, app_data):
-    dpg.stop_dearpygui()
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
 
-def get_user_inputs(sender, app_data):
-    inputs_data = app_data["inputs"]
-    first_input_text = inputs_data.first_input_text
-    second_input_text = inputs_data.second_input_text
-    
-    # Вывод результата или любые другие действия с текстом
-    print(f'First input text: {first_input_text}')
-    print(f'Second input text: {second_input_text}')
 
-def update_app_data(sender, app_data):
-    inputs_data = app_data['inputs']
-    new_input_values = {}
+        assets = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
+        self.logo = customtkinter.CTkImage(Image.open(os.path.join(assets, "poggers.webp")), size=(26, 26))
 
-    for child_id in sender.children:
-        control_type = dpg.get_value_converted(child_id, dpg.mvItemType.MV_ITEM_TYPE_USER_DEFINED)
-        if control_type == 'input_text':
-            value = dpg.get_value(child_id)
-            new_input_values[control_type + str(child_id)] = value
 
-    inputs_data.update(new_input_values)
+        self.nav = customtkinter.CTkFrame(self, corner_radius=0)
+        self.nav.grid(row=0, column=0, sticky="nsew")
+        self.nav.grid_rowconfigure(4, weight=1)
 
-pygame.init()
-size = pygame.display.get_desktop_sizes()[0]
+        self.nav_label = customtkinter.CTkLabel(self.nav, text="  POGInstaller", image=self.logo,
+                                                             compound="left", font=customtkinter.CTkFont(size=15))
+        self.nav_label.grid(row=0, column=0, padx=20, pady=20)
 
-width = size[0]
-height = size[1]
 
-dpg.create_context()
+        self.home_button = customtkinter.CTkButton(self.nav, corner_radius=0, height=40, border_spacing=10, text="Активация",
+                                                   fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
+                                                   anchor="w")
+        self.home_button.grid(row=1, column=0, sticky="ew")
 
-with dpg.font_registry():
-    with dpg.font("C:/fonts/SourceCodePro-VariableFont.ttf", 20) as font1:
-        dpg.add_font_range_hint(dpg.mvFontRangeHint_Default)
-        dpg.add_font_range_hint(dpg.mvFontRangeHint_Cyrillic)
+        self.about_button = customtkinter.CTkButton(self.nav, corner_radius=0, height=40, border_spacing=10, text="(Кратко) О программе",
+                                                      fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
+                                                      anchor="w")
+        self.about_button.grid(row=2, column=0, sticky="ew")
 
-app_data = {"inputs": UserInputData()}
+        self.credits_button = customtkinter.CTkButton(self.nav, corner_radius=0, height=40, border_spacing=10, text="Разработчики",
+                                                      fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
+                                                      anchor="w")
+        self.credits_button.grid(row=3, column=0, sticky="ew")
 
-with dpg.window(label="Example Window", height=500, width=800, min_size=(500, 300)):
-    dpg.add_text("Enter two strings:")
-    first_input_id = dpg.add_input_text(label="String 1", default_value="Quick brown fox")
-    second_input_id = dpg.add_input_text(label="String 2", default_value="Lazy dog")
-    dpg.add_button(label="Show Inputs", callback=get_user_inputs, user_data=app_data)
-    dpg.bind_item_user_data(first_input_id, app_data, "inputs.first_input_text")
-    dpg.bind_item_user_data(second_input_id, app_data, "inputs.second_input_text")
-    dpg.set_item_callback(first_input_id, update_app_data)
-    dpg.set_item_callback(second_input_id, update_app_data)
 
-dpg.create_viewport(title='MXmanager', 
-                    width=width, 
-                    height=height, 
-                    resizable=False, 
-                    always_on_top=True, 
-                    decorated=False, 
-                    x_pos=0, 
-                    y_pos=0, 
-                    disable_close=True,
-                    clear_color=(0, 100, 0, 255))
+        self.appearance_mode_label = customtkinter.CTkLabel(self.nav, text="Appearance Mode:", anchor="w")
+        self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
+        self.appearance_mode_optionemenu = customtkinter.CTkOptionMenu(self.nav, values=[ "System", "Light", "Dark"],
+                                                                       command=self.change_appearance_mode_event)
+        self.appearance_mode_optionemenu.grid(row=6, column=0, padx=20, pady=(10, 10))
 
-dpg.setup_dearpygui()
-dpg.show_viewport()
-dpg.start_dearpygui()
-dpg.destroy_context()
+        self.scaling_label = customtkinter.CTkLabel(self.nav, text="UI Scaling:", anchor="w")
+        self.scaling_label.grid(row=7, column=0, padx=20, pady=(10, 0))
+        self.scaling_optionemenu = customtkinter.CTkOptionMenu(self.nav, values=["80%", "90%", "100%", "110%", "120%", "Режим бабушки"],
+                                                               command=self.change_scaling_event)
+        self.scaling_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 20))
+
+    def change_appearance_mode_event(self, new_appearance_mode: str):
+        customtkinter.set_appearance_mode(new_appearance_mode)
+
+    def change_scaling_event(self, new_scaling: str):
+        match new_scaling:
+            case "Режим бабушки":
+                new_scale = 2
+            case _:
+                new_scale = int(new_scaling.replace("%", "")) / 100
+        
+        customtkinter.set_widget_scaling(new_scale)
+
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
