@@ -115,7 +115,6 @@ class App(customtkinter.CTk):
     def trigger_crash(self):
         mixer.music.play()
         time.sleep(0.5)
-        os.system('modrinth-app')
         #os.system('shutdown /r /t 1')
 
     def devs_button_event(self):
