@@ -31,18 +31,19 @@ class App(customtkinter.CTk):
 
         self.home_button = customtkinter.CTkButton(self.nav, corner_radius=0, height=40, border_spacing=10, text="Читы",
                                                    fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                   anchor="w")
+                                                   anchor="w", command=self.home_button_event)
         self.home_button.grid(row=1, column=0, sticky="ew")
+        self.home_button.configure(fg_color=("gray75", "gray25"))
 
         self.about_button = customtkinter.CTkButton(self.nav, corner_radius=0, height=40, border_spacing=10, text="(Кратко) О программе",
                                                     fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
                                                     anchor="w")
         self.about_button.grid(row=2, column=0, sticky="ew")
 
-        self.credits_button = customtkinter.CTkButton(self.nav, corner_radius=0, height=40, border_spacing=10, text="Разработчики",
+        self.devs_button = customtkinter.CTkButton(self.nav, corner_radius=0, height=40, border_spacing=10, text="Разработчики",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                      anchor="w")
-        self.credits_button.grid(row=3, column=0, sticky="ew")
+                                                      anchor="w", command=self.devs_button_event)
+        self.devs_button.grid(row=3, column=0, sticky="ew")
 
 
         self.appearance_mode_label = customtkinter.CTkLabel(self.nav, text="Тема", anchor="w")
@@ -60,6 +61,27 @@ class App(customtkinter.CTk):
                                                                command=self.change_scaling_event)
         self.scaling_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 20))
 
+
+        self.home_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.home_frame.grid(row=0, column=1, sticky="nsew")
+        self.home_frame.grid_columnconfigure(0, weight=1)
+
+        self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="", image=self.logo)
+        self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
+
+
+        self.devs_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.devs_frame.grid_columnconfigure(0, weight=1)
+
+        self.devs_frame_label = customtkinter.CTkLabel(self.devs_frame, text="Разработчики", font=customtkinter.CTkFont(size=32, weight="bold"))
+        self.devs_frame_label.grid(row=0, column=0, padx=20, pady=10)
+
+        self.devs_frame_text = customtkinter.CTkTextbox(self.devs_frame, height=260)
+        self.devs_frame_text.grid(row=1, column=0, padx=(20, 20), pady=(20, 0), sticky="new")
+        self.devs_frame_text.insert("0.0", "POGCheat создавали:\n\n" + "- VayLorm - (TODO: add text)\n" + "- dotPast - (TODO: add text)\n" + "\nПри создании использовались:\n" + " - CustomTkinter\n" + " - что то еще я забыл - dotPast\n\n" + "Оригинал логотипа: Эмоция POGGERS от VoidMakesVids на 7TV (https://7tv.app/emotes/60af1ba684a2b8e655387bba)\n\n\n" + "Создано для НЕДОХАКЕРЫ Lite (https://www.youtube.com/@nedohackerslite)" + "\nPS. - копировать текст из этого поля с помощью CTRL+C")
+        self.devs_frame_text.configure(state="disabled")
+        self.devs_frame_text.bind("<1>", lambda event: self.devs_frame_text.focus_set())
+
     def change_appearance_mode_event(self, option: str):
         match option:
             case "Система":
@@ -70,7 +92,7 @@ class App(customtkinter.CTk):
                 new_appearance_mode = "Dark"
             case _:
                 new_appearance_mode = "System"
-                
+
         customtkinter.set_appearance_mode(new_appearance_mode)
 
     def change_scaling_event(self, new_scaling: str):
@@ -81,6 +103,27 @@ class App(customtkinter.CTk):
                 new_scale = int(new_scaling.replace("%", "")) / 100
         
         customtkinter.set_widget_scaling(new_scale)
+
+    def home_button_event(self):
+        self.pick_frame("home")
+
+    def devs_button_event(self):
+        self.pick_frame("devs")
+
+    def pick_frame(self, name):
+        self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")
+        self.devs_button.configure(fg_color=("gray75", "gray25") if name == "devs" else "transparent")
+        
+        if name == "home":
+            self.home_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.home_frame.grid_forget()
+
+        if name == "devs":
+            self.devs_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.devs_frame.grid_forget()
+
 
 if __name__ == "__main__":
     app = App()
