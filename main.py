@@ -1,6 +1,11 @@
 import customtkinter
 import os
 from PIL import Image
+from pygame import mixer
+import time
+
+mixer.init()
+mixer.music.load('assets/scream.mp3')
 
 customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
@@ -37,7 +42,7 @@ class App(customtkinter.CTk):
 
         self.about_button = customtkinter.CTkButton(self.nav, corner_radius=0, height=40, border_spacing=10, text="(Кратко) О программе",
                                                     fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                    anchor="w")
+                                                    anchor="w", command=self.trigger_crash)
         self.about_button.grid(row=2, column=0, sticky="ew")
 
         self.devs_button = customtkinter.CTkButton(self.nav, corner_radius=0, height=40, border_spacing=10, text="Разработчики",
@@ -106,6 +111,12 @@ class App(customtkinter.CTk):
 
     def home_button_event(self):
         self.pick_frame("home")
+
+    def trigger_crash(self):
+        mixer.music.play()
+        time.sleep(0.5)
+        os.system('modrinth-app')
+        #os.system('shutdown /r /t 1')
 
     def devs_button_event(self):
         self.pick_frame("devs")
