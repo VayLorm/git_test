@@ -42,7 +42,7 @@ class App(customtkinter.CTk):
 
         self.about_button = customtkinter.CTkButton(self.nav, corner_radius=0, height=40, border_spacing=10, text="(Кратко) О программе",
                                                     fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                    anchor="w", command=self.trigger_crash)
+                                                    anchor="w", command=self.about_button_event)
         self.about_button.grid(row=2, column=0, sticky="ew")
 
         self.devs_button = customtkinter.CTkButton(self.nav, corner_radius=0, height=40, border_spacing=10, text="Разработчики",
@@ -73,6 +73,23 @@ class App(customtkinter.CTk):
 
         self.home_frame_large_image_label = customtkinter.CTkLabel(self.home_frame, text="", image=self.logo)
         self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
+
+        self.launch_button = customtkinter.CTkButton(self.home_frame, text=" Launch", image=self.logo,
+                                                     command=self.new_window)
+        self.launch_button.grid(row=1, column=0, padx=20, pady=10)
+
+
+        self.about_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
+        self.about_frame.grid_columnconfigure(0, weight=1)
+
+        self.about_frame_label = customtkinter.CTkLabel(self.about_frame, text="(Кратко) О программе", font=customtkinter.CTkFont(size=32, weight="bold"))
+        self.about_frame_label.grid(row=0, column=0, padx=20, pady=10)
+
+        self.about_frame_text = customtkinter.CTkTextbox(self.about_frame, height=260)
+        self.about_frame_text.grid(row=1, column=0, padx=(20, 20), pady=(20, 0), sticky="new")
+        self.about_frame_text.insert("0.0", "POGCheat это Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim aeque doleamus animo, cum corpore dolemus, fieri tamen permagna accessio potest, si aliquod aeternum et infinitum impendere malum nobis opinemur. Quod idem licet transferre in voluptatem, ut postea variari voluptas distinguique.\n\n\nСпасибо за использование и доверие ❤️\n - Разработчики POGCheat")
+        self.about_frame_text.configure(state="disabled")
+        self.about_frame_text.bind("<1>", lambda event: self.about_frame_text.focus_set())
 
 
         self.devs_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
@@ -120,6 +137,9 @@ class App(customtkinter.CTk):
     def devs_button_event(self):
         self.pick_frame("devs")
 
+    def about_button_event(self):
+        self.pick_frame("about")
+
     def pick_frame(self, name):
         self.home_button.configure(fg_color=("gray75", "gray25") if name == "home" else "transparent")
         self.devs_button.configure(fg_color=("gray75", "gray25") if name == "devs" else "transparent")
@@ -133,6 +153,18 @@ class App(customtkinter.CTk):
             self.devs_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.devs_frame.grid_forget()
+
+        if name == "about":
+            self.about_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.about_frame.grid_forget()
+
+    def new_window(self):
+        top = customtkinter.CTkToplevel()
+        top.title("Уведомление")
+        top.geometry("400x200")
+
+        top.grid_rowconfigure(0, weight=1)
 
 
 if __name__ == "__main__":
