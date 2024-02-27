@@ -16,11 +16,11 @@ class NoAdmin(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         self.title("POGCheat")
-        self.geometry("400x250")
+        self.geometry("450x110")
 
-        self.about_frame_text = customtkinter.CTkTextbox(self, height=260)
-        self.about_frame_text.grid(padx=(20, 20), pady=(20, 0), sticky="nsew")
-        self.about_frame_text.insert("0.0", "POGCheat")
+        self.about_frame_text = customtkinter.CTkTextbox(self, height=70, width=410)
+        self.about_frame_text.grid(padx=(20, 20), pady=(20, 20), sticky="nsew")
+        self.about_frame_text.insert("0.0", "POGCheat требует права администратора для корректной работы обхода античитов.\nПожалуйста запустите программу с правами администратора.")
         self.about_frame_text.configure(state="disabled")
         self.about_frame_text.bind("<1>", lambda event: self.about_frame_text.focus_set())
 
