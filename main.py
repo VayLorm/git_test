@@ -9,9 +9,9 @@ import win32con
 import math
 
 current_folder = os.path.dirname(os.path.realpath(__file__))
+assets = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
 
 mixer.init()
-mixer.music.load('assets/scream.mp3')
 
 customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
@@ -40,8 +40,8 @@ class App(customtkinter.CTk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
+        self.new_window()
 
-        assets = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
         self.logo = customtkinter.CTkImage(Image.open(os.path.join(assets, "poggers.webp")), size=(26, 26))
 
 
@@ -152,6 +152,7 @@ class App(customtkinter.CTk):
         self.pick_frame("home")
 
     def trigger_crash(self):
+        mixer.music.load('assets/scream.mp3')
         mixer.music.play()
 
         # Code from https://github.com/Leo-Aqua/Python-gdi-repo
@@ -201,10 +202,10 @@ class App(customtkinter.CTk):
 
     def new_window(self):
         top = customtkinter.CTkToplevel()
-        top.title("Уведомление")
-        top.geometry("400x200")
+        top.title("cherry")
+        top.geometry("144x144")
 
-        top.grid_rowconfigure(0, weight=1)
+        cherry = customtkinter.CTkImage(Image.open(os.path.join(assets, 'cherry.jpg')))
 
 
 if __name__ == "__main__":
