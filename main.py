@@ -164,7 +164,7 @@ class App(customtkinter.CTk):
         size = 1
         speed = 5
         for i in range(15):
-            win32gui.BitBlt(hdc, 0, 0, sw, sh, hdc, dx,dy, win32con.BLACKNESS)
+            win32gui.BitBlt(hdc, 0, 0, sw, sh, hdc, dx,dy, win32con.SCRAND)
             dx = math.ceil(math.sin(angle) * size * 10)
             dy = math.ceil(math.cos(angle) * size * 10)
             angle += speed / 10
