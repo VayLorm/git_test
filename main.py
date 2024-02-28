@@ -16,9 +16,9 @@ class NoAdmin(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         self.title("POGCheat")
-        self.geometry("450x110")
+        self.geometry("460x110")
 
-        self.about_frame_text = customtkinter.CTkTextbox(self, height=70, width=410)
+        self.about_frame_text = customtkinter.CTkTextbox(self, height=70, width=420)
         self.about_frame_text.grid(padx=(20, 20), pady=(20, 20), sticky="nsew")
         self.about_frame_text.insert("0.0", "POGCheat требует права администратора для корректной работы обхода античитов.\nПожалуйста запустите программу с правами администратора.")
         self.about_frame_text.configure(state="disabled")
