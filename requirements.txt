@@ -1,0 +1,6 @@
+customtkinter
+pillow
+psutil
+pygame
+pywin32
+tk

