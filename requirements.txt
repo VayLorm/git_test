@@ -3,4 +3,3 @@ pillow
 pygame
 pywin32
 tk
-opencv-python
