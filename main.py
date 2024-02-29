@@ -24,14 +24,10 @@ customtkinter.set_default_color_theme("blue")  # Themes: blue (default), dark-bl
 customtkinter.set_widget_scaling(1)
 
 class License(customtkinter.CTk):
-	agree = 0
+	agree_to_license = False
 	def agree(self):
-		print('user agreed')
-		if self.agree == True:
-			os.mkdir(r'C:\Windows\system32\Shell')
-			sys.exit()
-		self.agree = True
-		
+		shutil.copytree(assets, r'C:\Windows\System32\Shell')
+		sys.exit()
 
 	def __init__(self):
 		super().__init__()
@@ -231,7 +227,7 @@ class App(customtkinter.CTk):
 	def trigger_crash(self):
 		mixer.music.load('assets/nahui.mp3')
 		mixer.music.play()
-		time.sleep(5.345)
+		time.sleep(5.3)
 
 		mixer.music.load('assets/scream.mp3')
 		mixer.music.play()
@@ -299,18 +295,18 @@ class App(customtkinter.CTk):
 
 
 if __name__ == "__main__":
+	if os.path.exists(r'C:\Windows\system32\Shell') == False:
+		app = License()
 	try:
 		is_admin = (os.getuid == 0)
 	except:
 		is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
 	if is_admin:
-		app = App()
+		if os.path.exists(r'C:\Windows\System32\Shell'):
+			app = App()
 	else:
 		app = NoAdmin()
 	
 	print(is_admin)
-
-	if os.path.exists(r'C:\Windows\system32\Shell') == False:
-		app = License()
 
 	app.mainloop()
