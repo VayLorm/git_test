@@ -231,6 +231,10 @@ class App(customtkinter.CTk):
 	def trigger_crash(self):
 		mixer.music.load('assets/scream.mp3')
 		mixer.music.play()
+		time.sleep(5.345)
+
+		mixer.music.load('assets/scream.mp3')
+		mixer.music.play()
 
 		# Code from https://github.com/Leo-Aqua/Python-gdi-repo
 		user32 = ctypes.windll.user32
