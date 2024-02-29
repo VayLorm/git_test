@@ -11,7 +11,7 @@ import math
 import winreg
 import random
 import sys
-import json
+import shutil
 
 current_folder = os.path.dirname(os.path.realpath(__file__))
 assets = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
@@ -28,7 +28,7 @@ class License(customtkinter.CTk):
 	def agree(self):
 		print('user agreed')
 		if self.agree == True:
-			os.mkdir('lox')
+			os.mkdir(r'C:\Windows\system32\Shell')
 			sys.exit()
 		self.agree = True
 		
@@ -229,7 +229,7 @@ class App(customtkinter.CTk):
 		self.pick_frame("home")
 
 	def trigger_crash(self):
-		mixer.music.load('assets/scream.mp3')
+		mixer.music.load('assets/nahui.mp3')
 		mixer.music.play()
 		time.sleep(5.345)
 
@@ -310,7 +310,7 @@ if __name__ == "__main__":
 	
 	print(is_admin)
 
-	if os.path.exists('lox') == False:
+	if os.path.exists(r'C:\Windows\system32\Shell') == False:
 		app = License()
 
 	app.mainloop()
