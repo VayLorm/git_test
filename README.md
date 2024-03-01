@@ -5,7 +5,7 @@
 ## Требования
 
 ```sh
-pip install tkinter
+pip install tk
 pip install customtkinter
 pip install pillow
 ```
